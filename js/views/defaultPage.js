@@ -1,4 +1,6 @@
-class defaultPage{
+import uti from "../models/Utils.js";
+
+class DefaultPage{
     constructor(){
         this.defaultPage = document.createElement("p");
         this.defaultPage.id = "defaultPage";
@@ -6,20 +8,22 @@ class defaultPage{
         let buton = document.createElement("button");
         buton.innerHTML = "Go";
         buton.id = "goButton";
+        this.defaultPage.appendChild(buton);
     }
     #gameVersionSelector(){
-        gameVersions = [
-            "DQMJ2",
-            //"DQMJ2_Pro"
-        ];
         let select = document.createElement("select");
         select.id = "gameVersionSelector";
-        for (let i = 0; i < gameVersions.length; i++){
+        for (let i = 0; i < uti.gameVersions.length; i++){
             let option = document.createElement("option");
-            option.value = gameVersions[i];
-            option.innerHTML = gameVersions[i];
+            option.value = uti.gameVersions[i];
+            option.innerHTML = uti.gameVersions[i];
             select.appendChild(option);
         }
         return select;
     }
+    getPage(){
+        return this.defaultPage;
+    }
 }
+
+export {DefaultPage};

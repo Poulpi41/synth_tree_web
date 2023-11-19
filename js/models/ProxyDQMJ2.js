@@ -1,6 +1,6 @@
 import dqmj2_db from "./fetchers/DQMJ2/db.js";
 import monsterToID from "./fetchers/DQMJ2/monsterToID.js";
-
+import uti from "./Utils.js";
 
 
 class DB_DQMJ2 {
@@ -17,7 +17,7 @@ class DB_DQMJ2 {
             return []
         }
         else{
-            return test.sort(compareSynthProp);
+            return test.sort(uti.compareSynthProp);
         }
     }
     searchFirst(name){

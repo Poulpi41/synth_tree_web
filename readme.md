@@ -3,7 +3,7 @@
 note:
 - to run chomium without cors exception:
 ```bash
-chromium-browser --disable-web-security --user-data-dir="/tmp/"
+chromium-browser --disable-web-security --user-data-dir="/tmp/" ./index_dev.html
 ```
 - to create fat_js : 
 ```bash

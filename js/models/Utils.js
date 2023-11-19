@@ -12,10 +12,14 @@ const propVal = {
         "rank increase": 6
     }
 }
+const gameVersions = [
+    "DQMJ2",
+    "DQMJ2Pro"
+];
 function getStringImage(name){
     return `https://poulpi41.github.io/DQMJ2/images/${name}.png`;
 }
 function compareSynthProp(a, b){
     return propVal[synthProp[b['st']]][synthProp[b['rt']]] - propVal[synthProp[a['st']]][synthProp[a['rt']]];
 }
-export default {propVal, getStringImage, compareSynthProp};
+export default {propVal, getStringImage, compareSynthProp, gameVersions};
