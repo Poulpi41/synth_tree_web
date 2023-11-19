@@ -1,5 +1,8 @@
+import uti from "./Utils.js";
+import IDToMonster from "./fetchers/DQMJ2/IDToMonster.js";
+
 class SynthTree{
-    constructor(id,name,level){
+    constructor(id,name,level, depth){
         this.id = id;
         this.name = name;
         this.level = level;
@@ -11,45 +14,48 @@ class SynthTree{
         this.parentNumber++;
     }
     toHtml(){
-        let html = "";
-        if (this.id == 0){
-            html+="<ul>";
-        }
-        html+= "<li id='node" + this.id + "'>" + this.name;
-        if (this.level != null){
-            html += this.level;
-        }
+        let li = document.createElement("li");
+        li.id = `node${this.id}`;
+        let img = document.createElement("img");
+        img.src = uti.getStringImage(this.name);
+        img.alt = `${this.name} image`;
+        li.appendChild(img);
+        li.appendChild(document.createElement("br"));
+        let lv = this.level == null ? "" : ` lv.${this.level}`;
+        let text = document.createTextNode(this.name+lv);
+        li.appendChild(text);
         if (this.parentNumber > 0){
-            html += "<ul>";
+            let ul = document.createElement("ul");
             for (let i = 0; i < this.parentNumber; i++){
-                html += this.parent[i].toHtml();
+                ul.appendChild(this.parent[i].toHtml());
             }
-            html += "</ul>";
+            li.appendChild(ul);
         }
-        html += "</li>";
         if (this.id == 0){
-            html+="</ul>";
+            let ul = document.createElement("ul");
+            ul.appendChild(li);
+            return ul;
         }
-        return html;
+        return li;
     }
 }
 function createTree(proxy, name, depth){
-    return rec_createTree(0, proxy, name, depth);
+    return rec_createTree(0, proxy, name, null, depth);
 }
-function extractLevel(str){
-    let test = str.indexOf(" lv.");
-    if (test == -1){
-        return {name: str, level: null};
-    }
-    else{
-        let name = str.slice(0, test);
-        let level = str.slice(test);
-        return {name: name, level: level};
-    }
-}
-function rec_createTree(nodeNumber, proxy, name, depth){
-    let tmp = extractLevel(name);
-    let node = new SynthTree(nodeNumber, tmp['name'], tmp['level']);
+// function extractLevel(str){
+//     let test = str.indexOf(" lv.");
+//     if (test == -1){
+//         return {name: str, level: null};
+//     }
+//     else{
+//         let name = str.slice(0, test);
+//         let level = str.slice(test);
+//         return {name: name, level: level};
+//     }
+// }
+function rec_createTree(nodeNumber, proxy, name, level, depth){
+    // let tmp = extractLevel(name);
+    let node = new SynthTree(nodeNumber, name, level,depth);
     if (depth == 0){
         return node;
     }
@@ -59,16 +65,16 @@ function rec_createTree(nodeNumber, proxy, name, depth){
             return node;
         }
         else{
-            let parents = synthesis['parents'];
+            let parents = synthesis['p'];
             if (parents == undefined){
                 return node;
             }
             for (let i = 0; i < parents.length; i++){
-                node.addChildren(rec_createTree(nodeNumber + i + 1, proxy, parents[i], depth - 1));
+                let lv = parents[i]['l']==undefined ? null : parents[i]['l'];
+                node.addChildren(rec_createTree(nodeNumber + i + 1, proxy, IDToMonster[`${parents[i]['i']}`], lv, depth - 1));
             }
         }
         return node;
     }
-
 }
 export {createTree};
