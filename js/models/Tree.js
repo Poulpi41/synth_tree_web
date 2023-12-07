@@ -1,13 +1,14 @@
 import uti from "./Utils.js";
-import IDToMonster from "./fetchers/DQMJ2/IDToMonster.js";
 
 class SynthTree{
-    constructor(id,name,level, depth){
+    constructor(id,name,level, depth, idToMonster){
         this.id = id;
         this.name = name;
         this.level = level;
         this.parent = [];
         this.parentNumber = 0;
+        this.depth = depth;
+        this.idToMonster = idToMonster;
     }
     addChildren(child){
         this.parent.push(child);
@@ -53,14 +54,14 @@ function createTree(proxy, name, depth){
 //         return {name: name, level: level};
 //     }
 // }
-function rec_createTree(nodeNumber, proxy, name, level, depth){
+function rec_createTree(nodeNumber, model, name, level, depth){
     // let tmp = extractLevel(name);
     let node = new SynthTree(nodeNumber, name, level,depth);
     if (depth == 0){
         return node;
     }
     else{
-        let synthesis = proxy.searchFirst(name);
+        let synthesis = model.getDB().searchFirst(name);
         if (synthesis == null){
             return node;
         }
@@ -71,7 +72,7 @@ function rec_createTree(nodeNumber, proxy, name, level, depth){
             }
             for (let i = 0; i < parents.length; i++){
                 let lv = parents[i]['l']==undefined ? null : parents[i]['l'];
-                node.addChildren(rec_createTree(nodeNumber + i + 1, proxy, IDToMonster[`${parents[i]['i']}`], lv, depth - 1));
+                node.addChildren(rec_createTree(nodeNumber + i + 1, model, model.getIDCorrespondance()[`${parents[i]['i']}`], lv, depth - 1));
             }
         }
         return node;

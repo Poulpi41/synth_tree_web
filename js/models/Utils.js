@@ -17,7 +17,7 @@ const gameVersions = [
     "DQMJ2Pro"
 ];
 function getStringImage(name){
-    return `https://poulpi41.github.io/DQMJ2/images/${name}.png`;
+    return `https://poulpi41.github.io/resources/DQMJ2_InComon/images/${name}.png`;
 }
 function compareSynthProp(a, b){
     return propVal[synthProp[b['st']]][synthProp[b['rt']]] - propVal[synthProp[a['st']]][synthProp[a['rt']]];
