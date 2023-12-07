@@ -50,6 +50,7 @@ class PageChanger{
             this.loadDQMJ2SynthList(nonPro.getDB(),monst);
         });
         this.#gameSelectionBtn();
+        this.gameVersion = "DQMJ2";
     }
     loadDQMJ2FamilyTree(model,name,depth){
         let tree = createTree(model,name,depth);
@@ -84,6 +85,7 @@ class PageChanger{
             this.loadDQMJ2_PROSynthList(pro.getDB(),monst);
         });
         this.#gameSelectionBtn();
+        this.gameVersion = "DQMJ2Pro";
     }
     loadDQMJ2_PROFamilyTree(model,name,depth){
         let tree = createTree(model,name,depth);
@@ -113,7 +115,16 @@ class PageChanger{
         btnGoBack.id = "goBackDQMJ2Select";
         btnGoBack.innerHTML = "go back to monster selection";
         btnGoBack.addEventListener("click", () => {
-            this.loadDQMJ2Session();
+            switch (this.gameVersion) {
+                case "DQMJ2":
+                    this.loadDQMJ2Session();
+                    break;
+                case "DQMJ2Pro":
+                    this.loadDQMJ2_PROSession();
+                    break;
+                default:
+                    throw new Error(`game version : ${gameVersion} unimplemented`);
+            }
         });
         this.currentBody.appendChild(btnGoBack);
     }

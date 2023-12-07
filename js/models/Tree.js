@@ -20,13 +20,25 @@ class SynthTree{
         let img = document.createElement("img");
         img.src = uti.getStringImage(this.name);
         img.alt = `${this.name} image`;
-        li.appendChild(img);
-        li.appendChild(document.createElement("br"));
         let lv = this.level == null ? "" : ` lv.${this.level}`;
         let text = document.createTextNode(this.name+lv);
-        li.appendChild(text);
+        let toAppend = li;
+        if (this.parentNumber > 0){
+            let span = document.createElement("span");
+            span.className = "caret";
+            li.appendChild(span);
+            span.addEventListener("click", () => {
+                span.parentElement.querySelector(".nested").classList.toggle("active");
+                span.classList.toggle("caret-down");
+            });
+            toAppend = span;
+        }
+        toAppend.appendChild(img);
+        toAppend.appendChild(document.createElement("br"));
+        toAppend.appendChild(text);
         if (this.parentNumber > 0){
             let ul = document.createElement("ul");
+            ul.className = "nested";
             for (let i = 0; i < this.parentNumber; i++){
                 ul.appendChild(this.parent[i].toHtml());
             }
