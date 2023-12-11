@@ -1,6 +1,18 @@
 import uti from "./Utils.js";
 
 class SynthTree{
+    static fromJson(json){
+        return this.rec_fromJson(json);
+    }
+    static rec_fromJson(obj){
+        let node = new SynthTree(obj.id, obj.name, obj.level, obj.depth, undefined);
+        if (obj.parentNumber > 0){
+            for (let i = 0; i < obj.parentNumber; i++){
+                node.addChildren(SynthTree.rec_fromJson(obj.parent[i], undefined));
+            }
+        }
+        return node;
+    }
     constructor(id,name,level, depth, idToMonster){
         this.id = id;
         this.name = name;
@@ -10,6 +22,7 @@ class SynthTree{
         this.depth = depth;
         this.idToMonster = idToMonster;
     }
+    
     addChildren(child){
         this.parent.push(child);
         this.parentNumber++;
@@ -34,7 +47,7 @@ class SynthTree{
             toAppend = span;
         }
         toAppend.appendChild(img);
-        toAppend.appendChild(document.createElement("br"));
+        // toAppend.appendChild(document.createElement("br"));
         toAppend.appendChild(text);
         if (this.parentNumber > 0){
             let ul = document.createElement("ul");
@@ -90,4 +103,4 @@ function rec_createTree(nodeNumber, model, name, level, depth){
         return node;
     }
 }
-export {createTree};
+export { createTree, SynthTree };

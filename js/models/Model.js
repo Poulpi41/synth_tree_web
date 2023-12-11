@@ -1,4 +1,5 @@
 class Model{
+    static instance;
     constructor(){
         if (this.constructor == Model){
             throw new Error("Model is an abstract class and cannot be instantiated");

@@ -1,11 +1,11 @@
 import uti from "../models/Utils.js";
-import IDToMonster from "../models/fetchers/DQMJ2/IDToMonster.js";
 import synthProp from "../models/fetchers/DQMJ2/synthProp.js";
 
 class SynthList{
-    constructor(son,synths){
+    constructor(son,model){
         this.son = son;
-        this.synths = synths;
+        this.synths = model.getDB().searchFor(son);
+        this.IDToMonster = model.getIDCorrespondance();
     }
     #elemTable(name,lv){
         let td = document.createElement("td");
@@ -46,7 +46,7 @@ class SynthList{
             tr2.appendChild(td_son);
             let parentList = element["p"];
             for (let i = 0; i < parentList.length; i++){
-                let name = IDToMonster[parentList[i]["i"]];
+                let name = this.IDToMonster[parentList[i]["i"]];
                 let lv = parentList[i]["l"];
                 let td = this.#elemTable(name,lv);
                 tr2.appendChild(td);
